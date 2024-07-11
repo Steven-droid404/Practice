@@ -19,5 +19,14 @@ namespace Practice
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            string url = HttpContext.Current.Request.Url.LocalPath;
+            if (!System.IO.File.Exists(Server.MapPath(url)) && !url.StartsWith("/api"))
+            {
+                Context.RewritePath("/");
+            }
+        }
     }
 }
